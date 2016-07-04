@@ -19,5 +19,5 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="SMS Application"/>
+        android:text="SMS Messenger"/>
 </RelativeLayout>
