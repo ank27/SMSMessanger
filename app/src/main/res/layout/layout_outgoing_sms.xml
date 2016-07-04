@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp"
+    android:layout_marginBottom="8dp"
+    android:paddingTop="8dp">
+    <RelativeLayout
+        android:id="@+id/ballon_view_outgoing"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:background="@drawable/balloon_outgoing_normal"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/message_text_outgoing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                style="@style/sms_text_style"
+                android:paddingRight="20dp"
+                android:maxWidth="280dp"
+                android:text="See this" />
+        </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/time_text_outgoing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ballon_view_outgoing"
+        android:text="7:00 PM" />
+</RelativeLayout>

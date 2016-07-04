@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_alignParentTop="true"
+    android:id="@+id/coordinator_inbox"
+    tools:context="com.smsapplication.InboxActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/topView"
+        android:background="@color/white">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/inbox_container"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </android.support.v7.widget.RecyclerView>
+        <ProgressBar
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/progress"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_sms"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:visibility="gone"
+            android:background="@color/colorPrimary"
+            android:elevation="6dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:src="@drawable/ic_plus"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/colorPrimary" />
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="6dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="right|bottom"
+            android:layout_alignParentBottom="true"
+            app:fab_addButtonColorNormal="@color/colorPrimaryDark"
+            app:fab_addButtonColorPressed="@color/colorPrimaryDark"
+            app:fab_addButtonPlusIconColor="@color/white"
+            app:fab_addButtonStrokeVisible="false"
+            app:fab_labelStyle="@style/menu_labels_style"
+            app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_upload_to_google"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            app:fab_colorNormal="@color/fab_color"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_plusIconColor="@color/white"
+            app:fab_icon="@drawable/ic_drive"
+            app:fab_size="mini"
+            app:fab_title="Backup to Google Drive" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_new_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:fab_colorNormal="@color/fab_color"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_plusIconColor="@color/white"
+            app:fab_icon="@drawable/ic_sms_fab"
+            app:fab_size="mini"
+            app:fab_title="New Conversation" />
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        </FrameLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/no_item_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_below="@+id/appBarSend"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/TextViewAppearanceMediumBold"
+            android:textAlignment="center"
+            android:text="Oops..No item found"/>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

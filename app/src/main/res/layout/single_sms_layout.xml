@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <com.smsapplication.Utils.CircularImageView
+            android:id="@+id/sms_sender_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="false"
+            app:civ_border="true"
+            app:civ_borderColor="@android:color/transparent"
+            app:civ_borderWidth="2dp"
+            app:civ_selector="false"
+            android:layout_centerVertical="true"
+            app:civ_shadow="false"
+            android:padding="8dp"
+            android:background="@drawable/ic_user" />
+        <TextView
+            android:id="@+id/sms_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_marginLeft="8dp"
+            style="@style/TextViewAppearanceLargeBold"
+            android:layout_toRightOf="@+id/sms_sender_image"
+            android:alpha="0.87"
+            android:text="IM-40003"/>
+        <TextView
+            android:id="@+id/sms_content"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/sms_sender"
+            android:layout_toRightOf="@+id/sms_sender_image"
+            android:layout_marginLeft="8dp"
+            style="@style/TextViewAppearanceMedium"
+            android:singleLine="false"
+            android:maxLines="3"
+            android:ellipsize="marquee"
+            android:padding="3dp"
+            android:layout_height="wrap_content"
+            android:text="Dummy sms"/>
+        <TextView
+            android:id="@+id/sms_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            style="@style/TextViewAppearanceMedium"
+            android:paddingRight="16dp"
+            android:text="3rd June"/>
+    </RelativeLayout>
+</RelativeLayout>

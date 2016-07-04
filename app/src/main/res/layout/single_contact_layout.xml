@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <com.smsapplication.Utils.CircularImageView
+            android:id="@+id/user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="false"
+            app:civ_border="true"
+            app:civ_borderColor="@android:color/transparent"
+            app:civ_borderWidth="2dp"
+            app:civ_selector="false"
+            android:layout_centerVertical="true"
+            app:civ_shadow="false"
+            android:background="@drawable/ic_user" />
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            style="@style/TextViewAppearanceMediumBold"
+            android:layout_toRightOf="@+id/user_image"
+            android:alpha="0.87"
+            android:text="Ankur"/>
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/username"
+            android:layout_toRightOf="@+id/user_image"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            style="@style/TextViewAppearanceMedium"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:text="9999999999"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <!-- Customize your theme here. -->
+                <item name="android:colorPrimary">@color/colorPrimary</item>
+                <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="android:statusBarColor">@android:color/transparent</item>
+                <item name="android:windowNoTitle">true</item>
+                <item name="windowActionBar">false</item>
+                <item name="android:windowBackground">@color/white</item>
+                <item name="android:windowContentTransitions">true</item>
+                <item name="android:windowAllowEnterTransitionOverlap">true</item>
+                <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        </style>
+        <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <!-- Customize your theme here. -->
+                <item name="android:colorPrimary">@color/colorPrimary</item>
+                <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+                <item name="android:windowNoTitle">true</item>
+                <item name="windowActionBar">false</item>
+                <item name="android:windowBackground">@color/white</item>
+                <item name="android:windowContentTransitions">true</item>
+                <item name="android:windowAllowEnterTransitionOverlap">true</item>
+                <item name="android:windowAllowReturnTransitionOverlap">true</item>
+                <item name="android:actionBarWidgetTheme">@style/MyActionBarTheme</item>
+        </style>
+        <style name="MyActionBarTheme" parent="Theme.AppCompat">
+                <item name="android:textColorHint">@color/white</item>
+        </style>
+        <style name="TextViewAppearance" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">14sp</item>
+                <item name="android:textColor">#ffffff</item>
+        </style>
+        <style name="TextViewAppearanceBlack" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">14sp</item>
+                <item name="android:textColor">#000000</item>
+                <item name="android:alpha">0.54</item>
+        </style>
+        <style name="TextViewAppearanceMedium" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">15sp</item>
+                <item name="android:textColor">@color/black</item>
+                <item name="android:alpha">0.54</item>
+        </style>
+        <style name="TextViewAppearanceMediumBold" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">15sp</item>
+                <item name="android:textColor">@color/black</item>
+                <item name="android:alpha">0.54</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+        <style name="TextViewAppearanceLarge" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">18sp</item>
+                <item name="android:textColor">#ffffff</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+        <style name="TextViewAppearanceLargeBold" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">18sp</item>
+                <item name="android:textColor">@color/black</item>
+                <item name="android:alpha">0.87</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+        <style name="TextViewAppearanceMediumWhite" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">15sp</item>
+                <item name="android:textColor">#ffffff</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+        <style name="TextViewAppearanceButton" parent="TextAppearance.AppCompat">
+                <item name="android:textSize">15sp</item>
+                <item name="android:textColor">#ffffff</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+        <style name="TextViewAppearanceHint" parent="TextAppearance.AppCompat">
+                <item name="android:textColorHint">#e2e2e2</item>
+                <item name="android:textSize">14sp</item>
+        </style>
+       <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+                <item name="android:textColor">#ffffff</item>
+        </style>
+        <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
+                <item name="android:background">@color/colorPrimary</item>
+                <item name="android:textColor">@style/ToolbarTitle</item>
+        </style>
+        <style name="Toolbar_contact" parent="Widget.AppCompat.Toolbar">
+                <item name="android:background">@color/contactColor</item>
+                <item name="android:textColor">@style/ToolbarTitle</item>
+                <item name="android:alpha">0.87</item>
+        </style>
+        <style name="TextViewCollapsingToolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+                <item name="android:textColor">#fff</item>
+                <item name="android:textSize">24sp</item>
+        </style>
+        <style name="sms_text_style">
+                <item name="android:layout_width">wrap_content</item>
+                <item name="android:layout_height">wrap_content</item>
+                <item name="android:paddingTop">5dp</item>
+                <item name="android:paddingBottom">5dp</item>
+                <item name="android:paddingLeft">8dp</item>
+                <item name="android:paddingRight">8dp</item>
+                <item name="android:textSize">16sp</item>
+                <item name="android:textColor">@color/black</item>
+        </style>
+        <style name="TextViewAppearanceChip" parent="TextAppearance.AppCompat">
+                <item name="android:textColorHint">@color/black</item>
+                <item name="android:alpha">0.87</item>
+                <item name="android:textSize">13sp</item>
+                <item name="android:fontFamily">Roboto</item>
+        </style>
+        <style name="menu_labels_style">
+                <item name="android:background">@drawable/fab_label_background</item>
+                <item name="android:textColor">@color/black</item>
+        </style>
+</resources>

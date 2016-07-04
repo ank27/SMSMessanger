@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentTop="true"
+    android:id="@+id/coordinator_conversation"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarBackup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarBackup"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@color/white"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                style="@style/Toolbar">
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appBarBackup"
+            android:padding="16dp">
+            <TextView
+                android:id="@+id/backup_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                style="@style/TextViewAppearanceMedium"
+                android:text="Back Up SMS to Google Drive"/>
+            <Button
+                android:id="@+id/backup_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/backup_text"
+                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true"
+                style="@style/TextViewAppearanceMediumBold"
+                android:textColor="@color/white"
+                android:alpha="0.87"
+                android:background="@color/colorPrimaryDark"
+                android:padding="5dp"
+                android:text="Backup to Google Drive"/>
+            <ProgressBar
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/progress_drive"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/backup_text" />
+            <TextView
+                android:id="@+id/progress_text"
+                android:text="Uploading file..."
+                android:layout_below="@+id/progress_drive"
+                style="@style/TextViewAppearanceMedium"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
