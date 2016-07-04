@@ -22,7 +22,8 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 style="@style/Toolbar_contact">
                 <EditText
-                    android:layout_width="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="50dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/editPerson"
                     style="@style/TextViewAppearanceMediumWhite"
@@ -35,9 +36,6 @@
                     android:id="@+id/done_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@color/colorPrimary"
-                    android:textColor="#ffffff"
                     android:text="Done"
                     style="@style/TextViewAppearanceMedium"/>
             </android.support.v7.widget.Toolbar>
@@ -61,15 +59,15 @@
                 android:layout_height="wrap_content"
                 style="@style/TextViewAppearanceBlack"
                 android:textStyle="bold"/>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/contact_container"
-                    android:layout_width="match_parent"
-                    android:background="@color/white"
-                    android:layout_below="@+id/contact_text"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical" >
-                </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/contact_container"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_below="@+id/contact_text"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical" >
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/no_item_layout"
@@ -85,17 +83,5 @@
                 android:textAlignment="center"
                 android:text="Oops..No item found"/>
         </RelativeLayout>
-        </RelativeLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_send_sms"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:visibility="gone"
-        android:elevation="16dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_arrow_forward_white_24dp"
-        app:layout_anchor="@+id/appBarSend"
-        app:layout_anchorGravity="bottom|right|end" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

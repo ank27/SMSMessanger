@@ -68,7 +68,11 @@ public class BackUpActivity extends BaseActivity{
                 backup_btn.setVisibility(View.GONE);
                 progress_drive.setVisibility(View.VISIBLE);
                 progress_text.setVisibility(View.VISIBLE);
-                Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);
+                if(getGoogleApiClient().isConnected()) {
+                    Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);
+                }else {
+                    getGoogleApiClient().connect();
+                }
             }
         });
     }
@@ -76,6 +80,7 @@ public class BackUpActivity extends BaseActivity{
     @Override
     public void onConnected(Bundle connectionHint) {
         super.onConnected(connectionHint);
+        Log.d(TAG,"Connected");
         // create new contents resource
 //        Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);
     }

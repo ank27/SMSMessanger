@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -41,6 +44,8 @@ public class ContactDetailActivity extends AppCompatActivity {
     Activity activity;
     public static RelativeLayout no_item_layout,contactListLayout;
     public static ProgressBar progressSend;
+    Button done_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,7 @@ public class ContactDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        done_btn=(Button) findViewById(R.id.done_btn);
         activity=this;
         progressSend=(ProgressBar) findViewById(R.id.progressSend);
         contactListLayout=(RelativeLayout) findViewById(R.id.contactListLayout);
@@ -65,8 +71,13 @@ public class ContactDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!editPerson.getText().toString().equals("")){
                     Intent conversationIntent=new Intent(ContactDetailActivity.this,ConversationDetailActivity.class);
-                    conversationIntent.putExtra("name",Common.selected_contact.name);
-                    conversationIntent.putExtra("mobile",Common.selected_contact.mobile);
+                    if(Common.selected_contact!=null) {
+                        conversationIntent.putExtra("name", Common.selected_contact.name);
+                        conversationIntent.putExtra("mobile", Common.selected_contact.mobile);
+                    }else {
+                        conversationIntent.putExtra("name", editPerson.getText().toString());
+                        conversationIntent.putExtra("mobile", editPerson.getText().toString());
+                    }
                     startActivity(conversationIntent);
                 }else {
                     Toast.makeText(getApplicationContext(),"Please select a contact person",Toast.LENGTH_SHORT).show();
@@ -74,6 +85,17 @@ public class ContactDetailActivity extends AppCompatActivity {
             }
         });
 
+        done_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab_send_sms.performClick();
+            }
+        });
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab_send_sms.getLayoutParams();
+            p.setMargins(0, 0, 0, 0); // get rid of margins since shadow area is now the margin
+            fab_send_sms.setLayoutParams(p);
+        }
         contact_container=(RecyclerView) findViewById(R.id.contact_container);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         contact_container.setLayoutManager(layoutManager);
@@ -84,19 +106,18 @@ public class ContactDetailActivity extends AppCompatActivity {
 
     private void getContacts() {
 
-        String[] reqCols = new String[] {ContactsContract.CommonDataKinds.Phone._ID,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.CONTACT_ID};
-        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, reqCols, null, null, null);
-        // use the cursor to access the contacts
-        while (phones.moveToNext()) {
-            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            String id=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID));
-            String contact_id=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-            Log.d(TAG,"Contact id "+id+ " name  "+name+ " phone " +phoneNumber+" contact_id "+contact_id);
-            Contact contact=new Contact(id,name,phoneNumber,contact_id);
-            contactList.add(contact);
-        }
-        adapter = new ContactAdapter(activity, contactList);
+//        String[] reqCols = new String[] {ContactsContract.CommonDataKinds.Phone._ID,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,ContactsContract.CommonDataKinds.Phone.NUMBER,ContactsContract.CommonDataKinds.Phone.CONTACT_ID};
+//        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, reqCols, null, null, null);
+//        // use the cursor to access the contacts
+//        while (phones.moveToNext()) {
+//            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//            String id=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID));
+//            String contact_id=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+//            Contact contact=new Contact(id,name,phoneNumber,contact_id);
+//            contactList.add(contact);
+//        }
+        adapter = new ContactAdapter(activity, Common.contactList);
         contact_container.setAdapter(adapter);
 
     }

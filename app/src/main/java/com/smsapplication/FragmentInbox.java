@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -54,7 +55,7 @@ public class FragmentInbox extends Fragment {
     boolean mIsReceiverRegistered = false;
     ProgressBar progress;
     boolean is_search_visible=false;
-    FrameLayout frame_layout;
+    static FrameLayout frame_layout;
     public static RelativeLayout topView,no_item_layout;
     public static FragmentInbox instance() {
         Log.d("fragement inbox","instance");
@@ -70,18 +71,11 @@ public class FragmentInbox extends Fragment {
         LinearLayoutManager layoutManager=new LinearLayoutManager(activity);
         inbox_container.setLayoutManager(layoutManager);
         inbox_container.setHasFixedSize(true);
+
         frame_layout=(FrameLayout) rootView.findViewById(R.id.frame_layout);
         no_item_layout=(RelativeLayout) rootView.findViewById(R.id.no_item_layout);
         topView=(RelativeLayout) rootView.findViewById(R.id.topView);
         progress=(ProgressBar) rootView.findViewById(R.id.progress);
-
-//        fab_sms.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent sendSMSIntent=new Intent(activity,ContactDetailActivity.class);
-//                startActivity(sendSMSIntent);
-//            }
-//        });
 
         frame_layout.getBackground().setAlpha(0);
         final FloatingActionsMenu fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
@@ -110,7 +104,6 @@ public class FragmentInbox extends Fragment {
         fab_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"action_upload_click_new");
                 fabMenu.collapse();
                 Intent backupIntent=new Intent(activity,BackUpActivity.class);
                 startActivity(backupIntent);
@@ -121,7 +114,6 @@ public class FragmentInbox extends Fragment {
         fab_contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"action_new_chat_click");
                 fabMenu.collapse();
                 Intent contactIntent=new Intent(activity,ContactDetailActivity.class);
                 startActivity(contactIntent);
@@ -131,7 +123,6 @@ public class FragmentInbox extends Fragment {
 
         setHasOptionsMenu(true);
         readSMS();
-        Log.d(TAG,"OncreateView");
         return rootView;
     }
 
@@ -139,17 +130,10 @@ public class FragmentInbox extends Fragment {
         Uri smsUri=Uri.parse("content://sms/");
         String[] reqCols = new String[] {"DISTINCT address", "_id" , "date", "body" , "type" , "read","person" };
         Cursor cur =activity.getContentResolver().query(smsUri, reqCols,"address IS NOT NULL) GROUP BY (address",null,null);
-        String sms = "";
-
         while (cur.moveToNext()) {
-            sms +="id "+cur.getString(1) +" address :" + cur.getString(0) + " date: " +cur.getString(2) +" body : "+cur.getString(3)+" type : "+cur.getString(4)+" read : "+cur.getString(5)+" person : "+cur.getString(6)+"\n\n\n";
             SMS smsObject=new SMS(cur.getString(1),cur.getString(0),cur.getString(2),cur.getString(3),cur.getString(4),cur.getString(5),cur.getString(6));
             Common.smsArrayList.add(smsObject);
         }
-        for(int i=0;i<Common.smsArrayList.size();i++){
-            Log.d("Sms person: ",Common.smsArrayList.get(i).person +" sender: "+Common.smsArrayList.get(i).sender);
-        }
-
         adapter = new InboxAdapter(activity, Common.smsArrayList);
         inbox_container.setAdapter(adapter);
     }
@@ -158,13 +142,11 @@ public class FragmentInbox extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Log.d(TAG,"Oncreate");
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        Log.d(TAG,"OnResume");
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -191,7 +173,6 @@ public class FragmentInbox extends Fragment {
 
     public void updateList(final String sender,final String msg) {
         SMS sms=new SMS(sender,String.valueOf(System.currentTimeMillis() / 1000L),msg,String.valueOf(1),String.valueOf(0));
-        Log.d("updateList ",sms.message);
         Common.smsArrayList.add(0,sms);
         Common.smsArrayListFull.add(0,sms);
         adapter = new InboxAdapter(activity, Common.smsArrayList);
@@ -208,47 +189,52 @@ public class FragmentInbox extends Fragment {
         SearchView.SearchAutoComplete textArea = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         textArea.setTextColor(ContextCompat.getColor(activity, R.color.white));
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
-        Log.d(TAG,"option_menu");
-
-        adapter = new InboxAdapter(activity, Common.smsArrayList);
-        inbox_container.setAdapter(adapter);
+        Log.d(TAG,"OptionMenu");
+//        adapter = new InboxAdapter(activity, Common.smsArrayList);
+//        inbox_container.setAdapter(adapter);
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                Log.d(TAG,"MenuExpand");
+                searchAdapter=new SMSSearchAdapter(activity,Common.smsArrayListFull);
+                inbox_container.setAdapter(searchAdapter);
+                searchAdapter.notifyDataSetChanged();
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Log.d(TAG,"MenuCollapse");
                 adapter = new InboxAdapter(activity, Common.smsArrayList);
                 inbox_container.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
                 return true;
             }
         });
 
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG,"Focus changed");
-                searchItem.collapseActionView();
-                searchView.setQuery("", false);
-                adapter = new InboxAdapter(activity, Common.smsArrayList);
-                inbox_container.setAdapter(adapter);
-            }
-        });
+//        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                searchItem.collapseActionView();
+//                searchView.setQuery("", false);
+//                adapter = new InboxAdapter(activity, Common.smsArrayList);
+//                inbox_container.setAdapter(adapter);
+//            }
+//        });
 
         final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String searchText) {
-                searchAdapter=new SMSSearchAdapter(activity,Common.smsArrayListFull);
-                Log.d("smsListFull",String.valueOf(Common.smsArrayListFull.size()));
-                inbox_container.setAdapter(searchAdapter);
-                searchAdapter.getFilter().filter(searchText);
-                searchAdapter.notifyDataSetChanged();
+//                searchAdapter.getFilter().filter(searchText);
+                searchAdapter.getFilter().filter(searchText, new Filter.FilterListener() {
+                    @Override
+                    public void onFilterComplete(int count) {
+                        if(count==0){
+                            Log.d(TAG,"Count 0");
+                            no_item_layout.setVisibility(View.VISIBLE);
+                            inbox_container.setVisibility(View.GONE);
+                            topView.setVisibility(View.GONE);
+                        }
+                    }
+                });
                 return true;
             }
 
@@ -269,11 +255,13 @@ public class FragmentInbox extends Fragment {
             no_item_layout.setVisibility(View.GONE);
             inbox_container.setVisibility(View.VISIBLE);
             topView.setVisibility(View.VISIBLE);
+            frame_layout.setVisibility(View.VISIBLE);
 //            progressSend.setVisibility(View.GONE);
         }else if(layout_type==0){
             no_item_layout.setVisibility(View.VISIBLE);
             inbox_container.setVisibility(View.GONE);
             topView.setVisibility(View.GONE);
+            frame_layout.setVisibility(View.GONE);
 //            progressSend.setVisibility(View.GONE);
         }
     }

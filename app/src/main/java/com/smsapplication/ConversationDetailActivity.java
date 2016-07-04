@@ -69,7 +69,6 @@ public class ConversationDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!sms_edit_text.getText().toString().equals("")){
                     String contact_number = mobile;
-                    Log.d(TAG,contact_number);
                     try {
                         String SENT = "sent";
                         String DELIVERED = "delivered";
@@ -88,6 +87,10 @@ public class ConversationDetailActivity extends AppCompatActivity {
                                     case Activity.RESULT_OK:
                                         //SMS "date", "body" , "type" , "read"
                                         result = "SMS sent successfully";
+                                        SMS sms=filteredList.get(filteredList.size()-1);
+                                        sms.status=1;
+                                        adapter.notifyDataSetChanged();
+                                        conversation_container.setSelection(adapter.getCount()-1);
                                         break;
                                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                                         result = "Transmission failed";
@@ -105,23 +108,33 @@ public class ConversationDetailActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                             }
                         }, new IntentFilter(SENT));
+
                         /* Register for Delivery event */
                         registerReceiver(new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
-                                Toast.makeText(getApplicationContext(), "SMS Deliverd", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), "SMS Deliverd", Toast.LENGTH_LONG).show();
                             }
                         }, new IntentFilter(DELIVERED));
 
-
+                        Log.d(TAG," Contact: "+contact_number+" msg: " +sms_edit_text.getText().toString());
                         SmsManager smsManager = SmsManager.getDefault();
                         smsManager.sendTextMessage(contact_number, null, sms_edit_text.getText().toString(), sentPendingIntent, deliverPendingIntent);
-                        //SMS "date","msg","type","read"
-                        SMS smsObject=new SMS(String.valueOf(System.currentTimeMillis()),sms_edit_text.getText().toString(),String.valueOf(2),String.valueOf(1));
-                        filteredList.add(smsObject);
-                        adapter.notifyDataSetChanged();
+                        //SMS "date","msg","type","read","status"
+                        SMS smsObject=new SMS(String.valueOf(System.currentTimeMillis()),sms_edit_text.getText().toString(),String.valueOf(2),String.valueOf(1),0);
+                        if(filteredList.size()>0) {
+                            filteredList.add(smsObject);
+                            adapter.notifyDataSetChanged();
+                            conversation_container.setSelection(adapter.getCount()-1);
+                        }else {
+                            adapter = new SMSListAdapter(filteredList, activity);
+                            conversation_container.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            conversation_container.setSelection(adapter.getCount()-1);
+                        }
                         sms_edit_text.getText().clear();
                     }catch (Exception e){
+                        e.printStackTrace();
                         Toast.makeText(getApplicationContext(),"Failed to send sms",Toast.LENGTH_LONG).show();
                     }
 
@@ -147,13 +160,11 @@ public class ConversationDetailActivity extends AppCompatActivity {
         while (cur.moveToNext()) {
             sms +=" date: " +cur.getString(0) +" body : "+cur.getString(1)+" type : "+cur.getString(2)+" read : "+cur.getString(3)+"\n\n\n";
             Log.d(TAG,"SMS "+sms);
-            SMS smsObject=new SMS(cur.getString(0),cur.getString(1),cur.getString(2),cur.getString(3));
+            SMS smsObject=new SMS(cur.getString(0),cur.getString(1),cur.getString(2),cur.getString(3),1);
             filteredList.add(smsObject);
         }
         if(filteredList.size()>0) {
-//            if(filteredList.size()>1) {
-                Collections.reverse(filteredList);
-//            }
+            Collections.reverse(filteredList);
             adapter = new SMSListAdapter(filteredList, activity);
             conversation_container.setAdapter(adapter);
             conversation_container.setSelection(adapter.getCount()-1);

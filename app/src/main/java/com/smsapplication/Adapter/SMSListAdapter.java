@@ -52,39 +52,30 @@ public class SMSListAdapter extends BaseAdapter {
         ViewHolder2 holder2;
         //if sent sms
         if (message.type.equals("2")) {
-//            if (convertView == null) {
-                v = LayoutInflater.from(context).inflate(R.layout.layout_outgoing_sms, parent, false);
-                holder1 = new ViewHolder1();
-                holder1.message_text_outgoing = (TextView) v.findViewById(R.id.message_text_outgoing);
-                holder1.time_text_outgoing = (TextView) v.findViewById(R.id.time_text_outgoing);
-//                v.setTag(holder1);
-//            } else {
-//                v = convertView;
-//                holder1 = (ViewHolder1) v.getTag();
-//            }
-
+            v = LayoutInflater.from(context).inflate(R.layout.layout_outgoing_sms, parent, false);
+            holder1 = new ViewHolder1();
+            holder1.message_text_outgoing = (TextView) v.findViewById(R.id.message_text_outgoing);
+            holder1.time_text_outgoing = (TextView) v.findViewById(R.id.time_text_outgoing);
             holder1.message_text_outgoing.setText(message.message);
-
             final Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.valueOf(message.time));
             Date date = cal.getTime();
             Log.d("SMSAdapter",String.valueOf(date));
             SimpleDateFormat month_date = new SimpleDateFormat("MMM");
             String month_name = month_date.format(cal.getTime());
-            holder1.time_text_outgoing.setText(month_name+" "+cal.get(Calendar.DATE));
+
+            if(message.status==0){
+                holder1.time_text_outgoing.setText("Sending...");
+            }else if(message.status==1){
+                holder1.time_text_outgoing.setText(month_name+" "+cal.get(Calendar.DATE));
+            }
+
         } else if (message.type.equals("1")) {  //if inbox sms
-//            if (convertView == null) {
-                v = LayoutInflater.from(context).inflate(R.layout.layout_incoming_sms, parent, false);
-                holder2 = new ViewHolder2();
-                holder2.message_text_incoming = (TextView) v.findViewById(R.id.message_text_incoming);
-                holder2.time_text_incoming = (TextView) v.findViewById(R.id.time_text_incoming);
-//                v.setTag(holder2);
-//            } else {
-//                v = convertView;
-//                holder2 = (ViewHolder2) v.getTag();
-//            }
+            v = LayoutInflater.from(context).inflate(R.layout.layout_incoming_sms, parent, false);
+            holder2 = new ViewHolder2();
+            holder2.message_text_incoming = (TextView) v.findViewById(R.id.message_text_incoming);
+            holder2.time_text_incoming = (TextView) v.findViewById(R.id.time_text_incoming);
             holder2.message_text_incoming.setText(message.message);
-//            holder2.time_text_incoming.setText(message.time);
             final Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.valueOf(message.time));
             Date date = cal.getTime();
@@ -92,22 +83,13 @@ public class SMSListAdapter extends BaseAdapter {
             SimpleDateFormat month_date = new SimpleDateFormat("MMM");
             String month_name = month_date.format(cal.getTime());
             holder2.time_text_incoming.setText(month_name+" "+cal.get(Calendar.DATE));
-
         }else if (message.type.equals("5")) {
-//            if (convertView == null) {
-                v = LayoutInflater.from(context).inflate(R.layout.layout_outgoing_sms, parent, false);
-                holder1 = new ViewHolder1();
-                holder1.message_text_outgoing = (TextView) v.findViewById(R.id.message_text_outgoing);
-                holder1.time_text_outgoing = (TextView) v.findViewById(R.id.time_text_outgoing);
-                holder1.message_text_outgoing.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//                v.setTag(holder1);
-//            } else {
-//                v = convertView;
-//                holder1 = (ViewHolder1) v.getTag();
-//            }
-
+            v = LayoutInflater.from(context).inflate(R.layout.layout_outgoing_sms, parent, false);
+            holder1 = new ViewHolder1();
+            holder1.message_text_outgoing = (TextView) v.findViewById(R.id.message_text_outgoing);
+            holder1.time_text_outgoing = (TextView) v.findViewById(R.id.time_text_outgoing);
+            holder1.message_text_outgoing.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder1.message_text_outgoing.setText(message.message);
-
             final Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.valueOf(message.time));
             Date date = cal.getTime();
@@ -120,16 +102,6 @@ public class SMSListAdapter extends BaseAdapter {
         }
         return v;
     }
-
-//    @Override
-//    public int getViewTypeCount() {
-//        return smsArrayList.size();
-//    }
-//
-//    @Override
-//    public int getItemViewType(int position) {
-//        return position;
-//    }
 
     private class ViewHolder1 {
         public TextView message_text_outgoing;

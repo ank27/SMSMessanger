@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.smsapplication.Common;
 import com.smsapplication.ContactDetailActivity;
 import com.smsapplication.ConversationDetailActivity;
 import com.smsapplication.FragmentInbox;
@@ -22,6 +23,7 @@ import com.smsapplication.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -41,29 +43,47 @@ public class SMSSearchAdapter extends RecyclerView.Adapter<SMSSearchAdapter.View
         }
     @Override
     public SMSSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemLayoutView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.message_search_view, parent, false);
-        return new ViewHolder(itemLayoutView);
+        if(smsArrayList.size()>0) {
+            View itemLayoutView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.message_search_view, parent, false);
+            return new ViewHolder(itemLayoutView);
+        }else {
+            View itemLayoutView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.no_item_view, parent, false);
+            return new ViewHolder(itemLayoutView);
+//            return null;
+        }
+
     }
 
-@Override
-public void onBindViewHolder(SMSSearchAdapter.ViewHolder holder, final int position) {
-        holder.sms_sender.setText(smsArrayList.get(position).sender);
-        holder.sms_content.setText(smsArrayList.get(position).message);
+    @Override
+    public void onBindViewHolder(final SMSSearchAdapter.ViewHolder holder, final int position) {
+        if(smsArrayList.size()>0) {
+            Log.d("SearchAdapter ", smsArrayList.size() + " ");
+//            holder.sms_sender.setText(smsArrayList.get(position).sender);
+            holder.sms_content.setText(smsArrayList.get(position).message);
 
-        long time_long = Long.valueOf(smsArrayList.get(position).time)*1000;
-        Date date = new java.util.Date(time_long);
-        Log.d("date ",date.toString());
-        String timestamp = new SimpleDateFormat("MMM-dd", Locale.ENGLISH).format(date);
-        holder.sms_timestamp.setText(timestamp);
-        holder.top_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent conversationIntent=new Intent(activity, ConversationDetailActivity.class);
-                conversationIntent.putExtra("name", smsArrayList.get(position).sender);
-                conversationIntent.putExtra("mobile",smsArrayList.get(position).sender);
-                activity.startActivity(conversationIntent);
+            String name= Common.getContactName(activity,smsArrayList.get(position).sender.replaceAll("\\s+",""));
+            if(name!=null){
+                holder.sms_sender.setText(name);
+            }else {
+                holder.sms_sender.setText(smsArrayList.get(position).sender);
             }
-        });
+
+            final Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(Long.valueOf(smsArrayList.get(position).time));
+            Date date = cal.getTime();
+            SimpleDateFormat month_date = new SimpleDateFormat("MMM");
+            String month_name = month_date.format(cal.getTime());
+            holder.sms_timestamp.setText(month_name + " " + cal.get(Calendar.DATE));
+            holder.top_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent conversationIntent = new Intent(activity, ConversationDetailActivity.class);
+                    conversationIntent.putExtra("name", holder.sms_sender.getText().toString());
+                    conversationIntent.putExtra("mobile", smsArrayList.get(position).sender);
+                    activity.startActivity(conversationIntent);
+                }
+            });
+        }
 }
 
 @Override
@@ -122,14 +142,9 @@ private class ArrayFilter extends android.widget.Filter {
             for (int i = 0; i < count; i++) {
                 String sender = values.get(i).sender;
                 String content= values.get(i).message;
-                String time=values.get(i).time;
                 if (content.toLowerCase().contains(prefixString) || sender.toLowerCase().contains(prefixString)) {
                     SMS sms=new SMS(values.get(i).id,values.get(i).sender,values.get(i).time,values.get(i).message,values.get(i).type,values.get(i).read,values.get(i).person);
                     newValues.add(sms);
-//                        HashMap<String, String> hashMap = new HashMap<String, String>();
-//                        hashMap.put("name", name);
-//                        hashMap.put("email", email);
-//                        newValues.add(hashMap);
                 }
             }
             results.values = newValues;
@@ -142,6 +157,7 @@ private class ArrayFilter extends android.widget.Filter {
     protected void publishResults(CharSequence constraint, FilterResults results) {
         if (results.values != null) {
             smsArrayList = (ArrayList<SMS>) results.values;
+            Log.d("Result ",results.values.toString());
             Log.d("Filter1 contactSize",String.valueOf(smsArrayList.size()));
         } else {
             Log.d("Filter0 contactSize",String.valueOf(smsArrayList.size()));
@@ -150,9 +166,6 @@ private class ArrayFilter extends android.widget.Filter {
         if (results.count > 0) {
             notifyDataSetChanged();
             FragmentInbox.show_layout(1);
-        } else {
-            notifyDataSetChanged();
-            FragmentInbox.show_layout(0);
         }
     }
 }

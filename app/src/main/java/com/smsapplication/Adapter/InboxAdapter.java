@@ -59,7 +59,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
         String month_name = month_date.format(cal.getTime());
         holder.sms_timestamp.setText(month_name+" "+cal.get(Calendar.DATE));
 
-        String name= getContactName(activity,smsArrayList.get(position).sender.replaceAll("\\s+",""));
+        String name=Common.getContactName(activity,smsArrayList.get(position).sender.replaceAll("\\s+",""));
         if(name!=null){
             holder.sms_sender.setText(name);
         }else {
@@ -100,23 +100,5 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
         }
     }
 
-    public String getContactName(Context context, String phoneNumber) {
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-                Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri,
-                new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        String contactName = null;
-        if (cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor
-                    .getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-        return contactName;
-    }
+
 }

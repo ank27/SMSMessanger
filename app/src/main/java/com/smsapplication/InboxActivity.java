@@ -76,14 +76,6 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
         });
         invalidateOptionsMenu();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent backupIntent=new Intent(InboxActivity.this,BackUpActivity.class);
-                startActivity(backupIntent);
-            }
-        });
-
         activity=this;
         frame_container = (FrameLayout) findViewById(R.id.frame_container);
         fragmentManager = getSupportFragmentManager();
@@ -138,10 +130,11 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
                 transaction.addToBackStack(tag);
                 transaction.replace(R.id.frame_container, fragment, tag).commit();
             }
-//            else {
-//                fragmentManager.popBackStack(tag, 0);
-//            }
-        } else if (open_fragment==1) {
+            else {
+                fragmentManager.popBackStack(tag, 0);
+            }
+        }
+        else if (open_fragment==1) {
             tag = "About";
             if (fragmentManager.findFragmentByTag(tag) == null) {
                 fragment = new FragmentAbout();
@@ -164,13 +157,13 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
             item.setCheckable(true);
             drawer_layout.closeDrawers();
             open_fragment=0;
-//            set_fragment();
+            set_fragment(0);
         }
         if (id == R.id.about_us) {
             drawer_layout.closeDrawers();
             item.setChecked(true);
             open_fragment=1;
-//            set_fragment();
+            set_fragment(1);
         }
         if(id==R.id.backup_to_drive){
             Log.d(TAG,"item selected");

@@ -4,10 +4,29 @@
     android:background="@color/white"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/sms_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/ic_sms"/>
+    <ProgressBar
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/progress_splash"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/sms_icon"/>
+    <TextView
+        android:id="@+id/progress_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextViewAppearanceMediumBold"
+        android:visibility="gone"
+        android:layout_below="@+id/progress_splash"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Fetching SMS..."/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

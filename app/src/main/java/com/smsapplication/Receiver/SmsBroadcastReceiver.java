@@ -46,7 +46,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                 }
                 Log.e("USerdata",userdata);
             }
-            Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
             FragmentInbox fragmentInbox= FragmentInbox.instance();
             fragmentInbox.updateList(address,smsBody);
 
