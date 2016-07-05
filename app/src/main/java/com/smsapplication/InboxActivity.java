@@ -92,6 +92,7 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onResumeFragments(){
+        Log.d(TAG,"ResumeFragments");
         super.onResumeFragments();
         set_fragment(0);
         invalidateOptionsMenu();

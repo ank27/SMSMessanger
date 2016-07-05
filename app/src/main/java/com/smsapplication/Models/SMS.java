@@ -1,8 +1,5 @@
 package com.smsapplication.Models;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
 public class SMS {
     public String id;
     public String sender;

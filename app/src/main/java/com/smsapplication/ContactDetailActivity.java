@@ -30,9 +30,6 @@ import com.smsapplication.Models.SMS;
 
 import java.util.ArrayList;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
 public class ContactDetailActivity extends AppCompatActivity {
     Toolbar toolbarSendSms;
     RecyclerView contact_container;

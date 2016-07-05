@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
         android:background="@color/white">
         <RelativeLayout
             android:id="@+id/topView"
@@ -43,7 +43,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:src="@drawable/ic_plus"
+            android:src="@drawable/ic_sms_fab"
             app:backgroundTint="@color/colorPrimaryDark"
             app:borderWidth="0dp"
             app:fabSize="normal"
@@ -52,6 +52,8 @@
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:background="@color/white">
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fab_menu"

@@ -32,9 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
+
 public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
     List<SMS> smsArrayList;
     Activity activity;

@@ -14,9 +14,6 @@ import com.smsapplication.Models.SMS;
 
 import java.util.ArrayList;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
 public class Common extends Application {
     public static Contact selected_contact=null;
     public static ArrayList<SMS> smsArrayList=new ArrayList<>();

@@ -1,13 +1,10 @@
 package com.smsapplication;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -35,19 +32,12 @@ import com.smsapplication.Adapter.SMSSearchAdapter;
 import com.smsapplication.Models.SMS;
 import com.smsapplication.Receiver.SmsBroadcastReceiver;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
 public class FragmentInbox extends Fragment {
     private static FragmentInbox instance;
     Activity activity;
     View rootView;
     FloatingActionButton fab_sms;
-    static RecyclerView inbox_container;
+    public static RecyclerView inbox_container;
     String TAG="FragmentInbox";
     InboxAdapter adapter;
     SMSSearchAdapter searchAdapter;
@@ -120,6 +110,7 @@ public class FragmentInbox extends Fragment {
             }
         });
 
+        Log.d(TAG,"Oncreate");
 
         setHasOptionsMenu(true);
         readSMS();
@@ -147,6 +138,7 @@ public class FragmentInbox extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d(TAG,"Onresume");
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -196,6 +188,7 @@ public class FragmentInbox extends Fragment {
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                Log.d(TAG,"MenuExpand");
                 searchAdapter=new SMSSearchAdapter(activity,Common.smsArrayListFull);
                 inbox_container.setAdapter(searchAdapter);
                 searchAdapter.notifyDataSetChanged();
@@ -204,6 +197,7 @@ public class FragmentInbox extends Fragment {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                Log.d(TAG,"MenuCollapse");
                 adapter = new InboxAdapter(activity, Common.smsArrayList);
                 inbox_container.setAdapter(adapter);
                 return true;
@@ -223,18 +217,21 @@ public class FragmentInbox extends Fragment {
         final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String searchText) {
-//                searchAdapter.getFilter().filter(searchText);
-                searchAdapter.getFilter().filter(searchText, new Filter.FilterListener() {
-                    @Override
-                    public void onFilterComplete(int count) {
-                        if(count==0){
-                            Log.d(TAG,"Count 0");
-                            no_item_layout.setVisibility(View.VISIBLE);
-                            inbox_container.setVisibility(View.GONE);
-                            topView.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                searchAdapter.getFilter().filter(searchText);
+//                searchAdapter.getFilter().filter(searchText, new Filter.FilterListener() {
+//                    @Override
+//                    public void onFilterComplete(int count) {
+//                        Log.d(TAG," Count "+count);
+////                        if(count==0) {
+////                            FragmentInbox.show_layout(0);
+////                            frame_layout.getBackground().setAlpha(240);
+////                        }else {
+////                            adapter.notifyDataSetChanged();
+////                            FragmentInbox.show_layout(1);
+////                            frame_layout.getBackground().setAlpha(0);
+////                        }
+//                    }
+//                });
                 return true;
             }
 
@@ -244,9 +241,10 @@ public class FragmentInbox extends Fragment {
                 return true;
             }
         };
-        if (searchView != null)
+        if (searchView != null) {
             searchView.setOnQueryTextListener(queryTextListener);
-        return;
+            return;
+        }
     }
 
 
@@ -255,14 +253,12 @@ public class FragmentInbox extends Fragment {
             no_item_layout.setVisibility(View.GONE);
             inbox_container.setVisibility(View.VISIBLE);
             topView.setVisibility(View.VISIBLE);
-            frame_layout.setVisibility(View.VISIBLE);
-//            progressSend.setVisibility(View.GONE);
+            frame_layout.getBackground().setAlpha(0);
         }else if(layout_type==0){
             no_item_layout.setVisibility(View.VISIBLE);
             inbox_container.setVisibility(View.GONE);
             topView.setVisibility(View.GONE);
-            frame_layout.setVisibility(View.GONE);
-//            progressSend.setVisibility(View.GONE);
+            frame_layout.getBackground().setAlpha(240);
         }
     }
 

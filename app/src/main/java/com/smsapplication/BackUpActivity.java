@@ -35,9 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by ankurkhandelwal on 02/07/16.
- */
 public class BackUpActivity extends BaseActivity{
     public String TAG="BackupActivity";
     private Bitmap mBitmapToSave;

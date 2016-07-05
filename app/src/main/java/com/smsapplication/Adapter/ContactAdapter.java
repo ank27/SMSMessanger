@@ -153,31 +153,4 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             }
         }
     }
-
-    public static Drawable convertViewToDrawable(View view) {
-        int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        view.measure(spec, spec);
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        Bitmap b = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        c.translate(-view.getScrollX(), -view.getScrollY());
-        view.draw(c);
-        view.setDrawingCacheEnabled(true);
-        Bitmap cacheBmp = view.getDrawingCache();
-        Bitmap viewBmp = cacheBmp.copy(Bitmap.Config.ARGB_8888, true);
-        view.destroyDrawingCache();
-        return new BitmapDrawable(activity.getResources(), viewBmp);
-    }
-
-    public TextView createContactTextView(String text){
-        TextView tv = new TextView(activity);
-        tv.setText(text);
-        tv.setTextSize(20);
-        tv.setBackgroundResource(R.drawable.bubble);
-        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0,android.R.drawable.presence_offline, 0);
-        return tv;
-    }
-
-
 }

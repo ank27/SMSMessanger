@@ -20,9 +20,6 @@ import com.smsapplication.FragmentInbox;
 import com.smsapplication.InboxActivity;
 import com.smsapplication.R;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
 public class SmsBroadcastReceiver extends BroadcastReceiver {
     public static final String SMS_BUNDLE = "pdus";
 

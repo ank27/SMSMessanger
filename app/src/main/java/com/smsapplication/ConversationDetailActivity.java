@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by ankurkhandelwal on 01/07/16.
- */
 public class ConversationDetailActivity extends AppCompatActivity {
     Toolbar toolbarConversation;
     Activity activity;

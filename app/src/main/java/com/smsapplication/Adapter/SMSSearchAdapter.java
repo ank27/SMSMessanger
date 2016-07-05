@@ -28,37 +28,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by ankurkhandelwal on 02/07/16.
- */
 public class SMSSearchAdapter extends RecyclerView.Adapter<SMSSearchAdapter.ViewHolder> implements Filterable {
         List<SMS> smsArrayList;
         Activity activity;
         public ArrayFilter mFilter;
         ArrayList<SMS> newsmsList;
+
     public SMSSearchAdapter(Activity activity, List<SMS> data){
         this.activity= activity;
         this.smsArrayList = data;
         newsmsList=new ArrayList<SMS>(smsArrayList);
         }
+
     @Override
     public SMSSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(smsArrayList.size()>0) {
             View itemLayoutView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.message_search_view, parent, false);
             return new ViewHolder(itemLayoutView);
-        }else {
-            View itemLayoutView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.no_item_view, parent, false);
-            return new ViewHolder(itemLayoutView);
-//            return null;
-        }
 
     }
 
     @Override
-    public void onBindViewHolder(final SMSSearchAdapter.ViewHolder holder, final int position) {
-        if(smsArrayList.size()>0) {
+    public void onBindViewHolder(final SMSSearchAdapter.ViewHolder holder, int position) {
+            final int index=position;
             Log.d("SearchAdapter ", smsArrayList.size() + " ");
-//            holder.sms_sender.setText(smsArrayList.get(position).sender);
             holder.sms_content.setText(smsArrayList.get(position).message);
 
             String name= Common.getContactName(activity,smsArrayList.get(position).sender.replaceAll("\\s+",""));
@@ -79,21 +71,22 @@ public class SMSSearchAdapter extends RecyclerView.Adapter<SMSSearchAdapter.View
                 public void onClick(View v) {
                     Intent conversationIntent = new Intent(activity, ConversationDetailActivity.class);
                     conversationIntent.putExtra("name", holder.sms_sender.getText().toString());
-                    conversationIntent.putExtra("mobile", smsArrayList.get(position).sender);
+                    conversationIntent.putExtra("mobile", smsArrayList.get(index).sender);
+                    InboxAdapter adapter=new InboxAdapter(activity,Common.smsArrayList);
+                    FragmentInbox.inbox_container.setAdapter(adapter);
                     activity.startActivity(conversationIntent);
                 }
             });
-        }
-}
+    }
 
-@Override
-public int getItemCount() {
+    @Override
+    public int getItemCount() {
     return smsArrayList.size();
 }
 
 
 
-public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
     public TextView sms_sender;
     public TextView sms_content;
     public TextView sms_timestamp;
@@ -117,7 +110,7 @@ public class ViewHolder extends RecyclerView.ViewHolder{
     }
 
 
-private class ArrayFilter extends android.widget.Filter {
+    private class ArrayFilter extends android.widget.Filter {
     private final Object lock=new Object();
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
@@ -166,6 +159,9 @@ private class ArrayFilter extends android.widget.Filter {
         if (results.count > 0) {
             notifyDataSetChanged();
             FragmentInbox.show_layout(1);
+        }else {
+            notifyDataSetChanged();
+            FragmentInbox.show_layout(0);
         }
     }
 }
