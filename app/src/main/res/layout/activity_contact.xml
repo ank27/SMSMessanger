@@ -39,7 +39,8 @@
                     android:background="@color/colorPrimary"
                     android:textColor="#ffffff"
                     android:text="Done"
-                    style="@style/TextViewAppearanceMedium"/>
+                    style="@style/TextViewAppearanceMedium"
+                    android:alpha="0.87"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
         <ProgressBar
