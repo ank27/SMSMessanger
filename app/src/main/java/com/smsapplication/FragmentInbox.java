@@ -3,6 +3,7 @@ package com.smsapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.CaptivePortal;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,21 +35,20 @@ import com.smsapplication.Receiver.SmsBroadcastReceiver;
 
 public class FragmentInbox extends Fragment {
     private static FragmentInbox instance;
-    Activity activity;
+    static Activity activity;
     View rootView;
     FloatingActionButton fab_sms;
     public static RecyclerView inbox_container;
     String TAG="FragmentInbox";
-    InboxAdapter adapter;
+    static InboxAdapter adapter;
     SMSSearchAdapter searchAdapter;
     SmsBroadcastReceiver smsBroadcastReceiver=null;
     boolean mIsReceiverRegistered = false;
     ProgressBar progress;
     boolean is_search_visible=false;
-    static FrameLayout frame_layout;
+//    static FrameLayout frame_layout;
     public static RelativeLayout topView,no_item_layout;
     public static FragmentInbox instance() {
-        Log.d("fragement inbox","instance");
         return instance;
     }
 
@@ -61,56 +61,62 @@ public class FragmentInbox extends Fragment {
         LinearLayoutManager layoutManager=new LinearLayoutManager(activity);
         inbox_container.setLayoutManager(layoutManager);
         inbox_container.setHasFixedSize(true);
-
-        frame_layout=(FrameLayout) rootView.findViewById(R.id.frame_layout);
-        no_item_layout=(RelativeLayout) rootView.findViewById(R.id.no_item_layout);
-        topView=(RelativeLayout) rootView.findViewById(R.id.topView);
-        progress=(ProgressBar) rootView.findViewById(R.id.progress);
-
-        frame_layout.getBackground().setAlpha(0);
-        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
-        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-            @Override
-            public void onMenuExpanded() {
-                frame_layout.getBackground().setAlpha(240);
-                frame_layout.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        fabMenu.collapse();
-                        return true;
-                    }
-                });
-            }
-
-            @Override
-            public void onMenuCollapsed() {
-                frame_layout.getBackground().setAlpha(0);
-                frame_layout.setOnTouchListener(null);
-            }
-        });
-
-        com.getbase.floatingactionbutton.FloatingActionButton fab_upload=(com.getbase.floatingactionbutton.FloatingActionButton) rootView.findViewById(R.id.fab_upload_to_google);
-        fab_upload.setClickable(true);
-        fab_upload.setOnClickListener(new View.OnClickListener() {
+        fab_sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fabMenu.collapse();
-                Intent backupIntent=new Intent(activity,BackUpActivity.class);
-                startActivity(backupIntent);
-            }
-        });
-
-        com.getbase.floatingactionbutton.FloatingActionButton fab_contact=(com.getbase.floatingactionbutton.FloatingActionButton) rootView.findViewById(R.id.fab_new_contact);
-        fab_contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabMenu.collapse();
                 Intent contactIntent=new Intent(activity,ContactDetailActivity.class);
                 startActivity(contactIntent);
             }
         });
 
-        Log.d(TAG,"Oncreate");
+//        frame_layout=(FrameLayout) rootView.findViewById(R.id.frame_layout);
+        no_item_layout=(RelativeLayout) rootView.findViewById(R.id.no_item_layout);
+        topView=(RelativeLayout) rootView.findViewById(R.id.topView);
+        progress=(ProgressBar) rootView.findViewById(R.id.progress);
+
+//        frame_layout.getBackground().setAlpha(0);
+//        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
+//        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+//            @Override
+//            public void onMenuExpanded() {
+//                frame_layout.getBackground().setAlpha(240);
+//                frame_layout.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        fabMenu.collapse();
+//                        return true;
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onMenuCollapsed() {
+//                frame_layout.getBackground().setAlpha(0);
+//                frame_layout.setOnTouchListener(null);
+//            }
+//        });
+//
+//        com.getbase.floatingactionbutton.FloatingActionButton fab_upload=(com.getbase.floatingactionbutton.FloatingActionButton) rootView.findViewById(R.id.fab_upload_to_google);
+//        fab_upload.setClickable(true);
+//        fab_upload.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fabMenu.collapse();
+//                Intent backupIntent=new Intent(activity,BackUpActivity.class);
+//                startActivity(backupIntent);
+//            }
+//        });
+//
+//        com.getbase.floatingactionbutton.FloatingActionButton fab_contact=(com.getbase.floatingactionbutton.FloatingActionButton) rootView.findViewById(R.id.fab_new_contact);
+//        fab_contact.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fabMenu.collapse();
+//                Intent contactIntent=new Intent(activity,ContactDetailActivity.class);
+//                startActivity(contactIntent);
+//            }
+//        });
+//
 
         setHasOptionsMenu(true);
         readSMS();
@@ -138,7 +144,6 @@ public class FragmentInbox extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        Log.d(TAG,"Onresume");
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -163,8 +168,14 @@ public class FragmentInbox extends Fragment {
         instance = this;
     }
 
-    public void updateList(final String sender,final String msg) {
-        SMS sms=new SMS(sender,String.valueOf(System.currentTimeMillis() / 1000L),msg,String.valueOf(1),String.valueOf(0));
+    public static void updateList(final String sender,final String msg,final String type) {
+        SMS sms=new SMS(sender,String.valueOf(System.currentTimeMillis() / 1000L),msg,type,String.valueOf(0));
+        for(int i=0;i<Common.smsArrayList.size();i++){
+            if(Common.smsArrayList.get(i).sender.equals(sender)){
+                Log.d("update ","Sender present "+Common.smsArrayList.get(i).sender+" position "+i);
+                Common.smsArrayList.remove(i);
+            }
+        }
         Common.smsArrayList.add(0,sms);
         Common.smsArrayListFull.add(0,sms);
         adapter = new InboxAdapter(activity, Common.smsArrayList);
@@ -181,14 +192,12 @@ public class FragmentInbox extends Fragment {
         SearchView.SearchAutoComplete textArea = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         textArea.setTextColor(ContextCompat.getColor(activity, R.color.white));
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
-        Log.d(TAG,"OptionMenu");
 //        adapter = new InboxAdapter(activity, Common.smsArrayList);
 //        inbox_container.setAdapter(adapter);
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                Log.d(TAG,"MenuExpand");
                 searchAdapter=new SMSSearchAdapter(activity,Common.smsArrayListFull);
                 inbox_container.setAdapter(searchAdapter);
                 searchAdapter.notifyDataSetChanged();
@@ -197,7 +206,6 @@ public class FragmentInbox extends Fragment {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Log.d(TAG,"MenuCollapse");
                 adapter = new InboxAdapter(activity, Common.smsArrayList);
                 inbox_container.setAdapter(adapter);
                 return true;
@@ -253,12 +261,12 @@ public class FragmentInbox extends Fragment {
             no_item_layout.setVisibility(View.GONE);
             inbox_container.setVisibility(View.VISIBLE);
             topView.setVisibility(View.VISIBLE);
-            frame_layout.getBackground().setAlpha(0);
+//            frame_layout.getBackground().setAlpha(0);
         }else if(layout_type==0){
             no_item_layout.setVisibility(View.VISIBLE);
             inbox_container.setVisibility(View.GONE);
             topView.setVisibility(View.GONE);
-            frame_layout.getBackground().setAlpha(240);
+//            frame_layout.getBackground().setAlpha(240);
         }
     }
 

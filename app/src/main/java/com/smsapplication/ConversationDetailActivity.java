@@ -30,18 +30,22 @@ import java.util.List;
 public class ConversationDetailActivity extends AppCompatActivity {
     Toolbar toolbarConversation;
     Activity activity;
-    public String TAG="ConversationActivity";
+    public String TAG = "ConversationActivity";
     ListView conversation_container;
     SMSListAdapter adapter;
     EditText sms_edit_text;
     FloatingActionButton fab_send;
     ProgressBar progressConversation;
-    ArrayList<SMS> filteredList=new ArrayList<>();
+    ArrayList<SMS> filteredList = new ArrayList<>();
+    String name;
+    String mobile;
+    BroadcastReceiver smsBroadCastSend=new SMSBroadCastSend();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
-        toolbarConversation=(Toolbar)findViewById(R.id.toolbarConversation);
+        toolbarConversation = (Toolbar) findViewById(R.id.toolbarConversation);
         toolbarConversation.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbarConversation.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,14 +53,14 @@ public class ConversationDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        activity=this;
-        progressConversation=(ProgressBar) findViewById(R.id.progressConversation);
-        conversation_container=(ListView) findViewById(R.id.conversation_container);
-        sms_edit_text=(EditText) findViewById(R.id.sms_edit_text);
-        fab_send=(FloatingActionButton) findViewById(R.id.fab_send);
+        activity = this;
+        progressConversation = (ProgressBar) findViewById(R.id.progressConversation);
+        conversation_container = (ListView) findViewById(R.id.conversation_container);
+        sms_edit_text = (EditText) findViewById(R.id.sms_edit_text);
+        fab_send = (FloatingActionButton) findViewById(R.id.fab_send);
 
-        String name=getIntent().getExtras().getString("name");
-        final String mobile=getIntent().getExtras().getString("mobile");
+        name = getIntent().getExtras().getString("name");
+        mobile = getIntent().getExtras().getString("mobile");
         toolbarConversation.setTitle(name);
         check_conversation(mobile);
 
@@ -64,7 +68,7 @@ public class ConversationDetailActivity extends AppCompatActivity {
         fab_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!sms_edit_text.getText().toString().equals("")){
+                if (!sms_edit_text.getText().toString().equals("")) {
                     String contact_number = mobile;
                     try {
                         String SENT = "sent";
@@ -76,63 +80,71 @@ public class ConversationDetailActivity extends AppCompatActivity {
                         Intent deliveryIntent = new Intent(DELIVERED);
                         PendingIntent deliverPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, deliveryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         /* Register for SMS send action */
-                        registerReceiver(new BroadcastReceiver() {
-                            @Override
-                            public void onReceive(Context context, Intent intent) {
-                                String result = "";
-                                switch (getResultCode()) {
-                                    case Activity.RESULT_OK:
-                                        //SMS "date", "body" , "type" , "read"
-                                        result = "SMS sent successfully";
-                                        SMS sms=filteredList.get(filteredList.size()-1);
-                                        sms.status=1;
-                                        adapter.notifyDataSetChanged();
-                                        conversation_container.setSelection(adapter.getCount()-1);
-                                        break;
-                                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                                        result = "Transmission failed";
-                                        break;
-                                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                                        result = "Radio off";
-                                        break;
-                                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                                        result = "No PDU defined";
-                                        break;
-                                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                                        result = "No service";
-                                        break;
-                                }
-                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                            }
-                        }, new IntentFilter(SENT));
+//                        registerReceiver(new BroadcastReceiver() {
+//                            @Override
+//                            public void onReceive(Context context, Intent intent) {
+//                                String result = "";
+//                                switch (getResultCode()) {
+//                                    case Activity.RESULT_OK:
+//                                        //SMS "date", "body" , "type" , "read"
+//                                        result = "SMS sent successfully";
+//                                        SMS sms = filteredList.get(filteredList.size() - 1);
+//                                        sms.status = 1;
+//                                        adapter.notifyDataSetChanged();
+//                                        conversation_container.setSelection(adapter.getCount() - 1);
+//                                        Log.d(TAG," Sender "+mobile+" message "+sms.message);
+//                                        FragmentInbox fragmentInbox = FragmentInbox.instance();
+//                                        fragmentInbox.updateList(mobile, sms.message, "2");
+//                                        break;
+//                                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+//                                        result = "Transmission failed";
+//                                        break;
+//                                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+//                                        result = "Radio off";
+//                                        break;
+//                                    case SmsManager.RESULT_ERROR_NULL_PDU:
+//                                        result = "No PDU defined";
+//                                        break;
+//                                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+//                                        result = "No service";
+//                                        break;
+//                                }
+//                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+//                            }
+//                        }, new IntentFilter(SENT));
 
                         /* Register for Delivery event */
-                        registerReceiver(new BroadcastReceiver() {
-                            @Override
-                            public void onReceive(Context context, Intent intent) {
-//                                Toast.makeText(getApplicationContext(), "SMS Deliverd", Toast.LENGTH_LONG).show();
-                            }
-                        }, new IntentFilter(DELIVERED));
+//                        registerReceiver(new BroadcastReceiver() {
+//                            @Override
+//                            public void onReceive(Context context, Intent intent) {
+////                                Toast.makeText(getApplicationContext(), "SMS Deliverd", Toast.LENGTH_LONG).show();
+//                            }
+//                        }, new IntentFilter(DELIVERED));
 
-                        Log.d(TAG," Contact: "+contact_number+" msg: " +sms_edit_text.getText().toString());
+                        Log.d(TAG, " Contact: " + contact_number + " msg: " + sms_edit_text.getText().toString());
                         SmsManager smsManager = SmsManager.getDefault();
                         smsManager.sendTextMessage(contact_number, null, sms_edit_text.getText().toString(), sentPendingIntent, deliverPendingIntent);
+
                         //SMS "date","msg","type","read","status"
-                        SMS smsObject=new SMS(String.valueOf(System.currentTimeMillis()),sms_edit_text.getText().toString(),String.valueOf(2),String.valueOf(1),0);
-                        if(filteredList.size()>0) {
+                        SMS smsObject = new SMS(String.valueOf(System.currentTimeMillis()), sms_edit_text.getText().toString(), String.valueOf(2), String.valueOf(1), 0);
+                        if (filteredList.size() > 0) {
+                            Log.d(TAG,"filterlist size>0 "+filteredList.size());
                             filteredList.add(smsObject);
                             adapter.notifyDataSetChanged();
-                            conversation_container.setSelection(adapter.getCount()-1);
-                        }else {
+                            conversation_container.setSelection(adapter.getCount() - 1);
+                        } else {
+                            Log.d(TAG,"filterlist size "+filteredList.size());
+                            filteredList.add(smsObject);
                             adapter = new SMSListAdapter(filteredList, activity);
                             conversation_container.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-                            conversation_container.setSelection(adapter.getCount()-1);
+                            conversation_container.setSelection(adapter.getCount() - 1);
+                            Log.d(TAG,"Size now "+filteredList.size());
                         }
                         sms_edit_text.getText().clear();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(),"Failed to send sms",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Failed to send sms", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -145,32 +157,81 @@ public class ConversationDetailActivity extends AppCompatActivity {
 
     private void check_conversation(String mobile) {
         progressConversation.setVisibility(View.VISIBLE);
-        mobile=mobile.replaceAll("\\s+","");
-        Log.d("Check conv","of "+mobile);
-        filteredList=new ArrayList<>();
-        Uri smsUri=Uri.parse("content://sms/");
-        String[] reqCols = new String[] {"date", "body" , "type" , "read"};
-        String selection="address='"+mobile+"'";
+        mobile = mobile.replaceAll("\\s+", "");
+        Log.d("Check conv", "of " + mobile);
+        filteredList = new ArrayList<>();
+        Uri smsUri = Uri.parse("content://sms/");
+        String[] reqCols = new String[]{"date", "body", "type", "read"};
+        String selection = "address='" + mobile + "'";
         Cursor cur = getContentResolver().query(smsUri, reqCols, selection, null, "date desc");
         String sms = "";
-        Log.d(TAG,"Msgs  "+cur.getCount());
         while (cur.moveToNext()) {
-            sms +=" date: " +cur.getString(0) +" body : "+cur.getString(1)+" type : "+cur.getString(2)+" read : "+cur.getString(3)+"\n\n\n";
-            Log.d(TAG,"SMS "+sms);
-            SMS smsObject=new SMS(cur.getString(0),cur.getString(1),cur.getString(2),cur.getString(3),1);
+            SMS smsObject = new SMS(cur.getString(0), cur.getString(1), cur.getString(2), cur.getString(3), 1);
             filteredList.add(smsObject);
         }
-        if(filteredList.size()>0) {
+        if (filteredList.size() > 0) {
             Collections.reverse(filteredList);
             adapter = new SMSListAdapter(filteredList, activity);
             conversation_container.setAdapter(adapter);
-            conversation_container.setSelection(adapter.getCount()-1);
+            conversation_container.setSelection(adapter.getCount() - 1);
         }
         progressConversation.setVisibility(View.GONE);
     }
 
     @Override
-    public void onBackPressed(){
+    public void onResume(){
+        super.onResume();
+        String SENT = "sent";
+        Intent sentIntent = new Intent(SENT);
+        IntentFilter filter = new IntentFilter(SENT);
+        registerReceiver(smsBroadCastSend, filter);
+    }
+
+    @Override
+    public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        unregisterReceiver(smsBroadCastSend);
+    }
+
+
+    public class SMSBroadCastSend extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String result = "";
+            int resultCode = this.getResultCode();
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    //SMS "date", "body" , "type" , "read"
+                    result = "SMS sent successfully";
+                    SMS sms = filteredList.get(filteredList.size() - 1);
+                    sms.status = 1;
+                    adapter.notifyDataSetChanged();
+                    conversation_container.setSelection(adapter.getCount() - 1);
+                    Log.d(TAG," Sender "+mobile+" message "+sms.message);
+                    FragmentInbox fragmentInbox = FragmentInbox.instance();
+                    fragmentInbox.updateList(mobile, sms.message, "2");
+                    break;
+                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                    result = "Transmission failed";
+                    break;
+                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                    result = "Radio off";
+                    break;
+                case SmsManager.RESULT_ERROR_NULL_PDU:
+                    result = "No PDU defined";
+                    break;
+                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                    result = "No service";
+                    break;
+            }
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        }
+        }
 }

@@ -69,6 +69,10 @@ public class BackUpActivity extends BaseActivity{
                     Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);
                 }else {
                     getGoogleApiClient().connect();
+                    backup_btn.setVisibility(View.VISIBLE);
+                    progress_drive.setVisibility(View.GONE);
+                    progress_text.setVisibility(View.GONE);
+                    return;
                 }
             }
         });

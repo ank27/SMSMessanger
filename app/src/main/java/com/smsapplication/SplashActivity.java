@@ -83,23 +83,7 @@ public class SplashActivity extends Activity {
         }
 
         if (marshMallowPermission.checkPermissionForReadSMS() && marshMallowPermission.checkPermissionForReadContact()) {
-            countDownTimer = new CountDownTimer(2500, 500) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                }
-
-                @Override
-                public void onFinish() {
-                    Intent inboxIntent = new Intent(SplashActivity.this, InboxActivity.class);
-                    progress_splash.setVisibility(View.GONE);
-                    Common.editor.putString("first_time","false").apply();
-                    SplashActivity.this.startActivity(inboxIntent);
-                    SplashActivity.this.finish();
-                    SplashActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                }
-
-            };
-            countDownTimer.start();
+            startCountDown();
         }else{
             if(!marshMallowPermission.checkPermissionForReadContact()){
                 marshMallowPermission.requestPermissionForReadContact();
@@ -131,6 +115,7 @@ public class SplashActivity extends Activity {
 
         };
         handler.post(runnable);
+        startCountDown();
     }
 
 
@@ -140,6 +125,9 @@ public class SplashActivity extends Activity {
             case 3:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("SMSApplication", "Read SmsPermission granted");
+                    if(!marshMallowPermission.checkPermissionForReadContact()){
+                        marshMallowPermission.requestPermissionForReadContact();
+                    }
                     Handler handler = new Handler();
                     final Runnable runnable = new Runnable() {
                         @Override
@@ -164,10 +152,31 @@ public class SplashActivity extends Activity {
                     if (Common.contactList.size() == 0) {
                         getContacts();
                     }
+
                 } else {
                     Log.d("RsgApplication","Read Contact Permission Denied");
                 }
                 break;
         }
+    }
+
+    public void startCountDown(){
+        countDownTimer = new CountDownTimer(1500, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                Intent inboxIntent = new Intent(SplashActivity.this, InboxActivity.class);
+                progress_splash.setVisibility(View.GONE);
+                Common.editor.putString("first_time","false").apply();
+                SplashActivity.this.startActivity(inboxIntent);
+                SplashActivity.this.finish();
+                SplashActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+
+        };
+        countDownTimer.start();
     }
 }

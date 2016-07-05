@@ -128,7 +128,6 @@ public class SMSSearchAdapter extends RecyclerView.Adapter<SMSSearchAdapter.View
             }
         }else {
             final String prefixString = constraint.toString().toLowerCase();
-            Log.d("filter string ",prefixString);
             ArrayList<SMS> values = newsmsList;
             int count = values.size();
             ArrayList<SMS> newValues = new ArrayList<SMS>(count);
@@ -150,10 +149,7 @@ public class SMSSearchAdapter extends RecyclerView.Adapter<SMSSearchAdapter.View
     protected void publishResults(CharSequence constraint, FilterResults results) {
         if (results.values != null) {
             smsArrayList = (ArrayList<SMS>) results.values;
-            Log.d("Result ",results.values.toString());
-            Log.d("Filter1 contactSize",String.valueOf(smsArrayList.size()));
         } else {
-            Log.d("Filter0 contactSize",String.valueOf(smsArrayList.size()));
             smsArrayList = new ArrayList<SMS>();
         }
         if (results.count > 0) {

@@ -41,11 +41,11 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                 for (int index=0; index < data.length; index++) {
                     userdata += Byte.toString(data[index]);
                 }
-                Log.e("USerdata",userdata);
             }
 //            Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
+            Log.d("Receiver ","Sender  "+address +" msg "+smsBody);
             FragmentInbox fragmentInbox= FragmentInbox.instance();
-            fragmentInbox.updateList(address,smsBody);
+            fragmentInbox.updateList(address,smsBody,"1");
 
             Intent notificationIntent = new Intent(context, InboxActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

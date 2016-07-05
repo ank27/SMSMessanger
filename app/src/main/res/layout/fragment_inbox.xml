@@ -37,7 +37,7 @@
             android:layout_height="56dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@color/colorPrimary"
             android:elevation="6dp"
             android:layout_alignParentBottom="true"
@@ -48,53 +48,53 @@
             app:borderWidth="0dp"
             app:fabSize="normal"
             app:rippleColor="@color/colorPrimary" />
-        <FrameLayout
-            android:id="@+id/frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@color/white">
-        <com.getbase.floatingactionbutton.FloatingActionsMenu
-            android:id="@+id/fab_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="6dp"
-            android:layout_margin="5dp"
-            android:layout_gravity="right|bottom"
-            android:layout_alignParentBottom="true"
-            app:fab_addButtonColorNormal="@color/colorPrimaryDark"
-            app:fab_addButtonColorPressed="@color/colorPrimaryDark"
-            app:fab_addButtonPlusIconColor="@color/white"
-            app:fab_addButtonStrokeVisible="false"
-            app:fab_labelStyle="@style/menu_labels_style"
-            app:fab_labelsPosition="left">
+        <!--<FrameLayout-->
+            <!--android:id="@+id/frame_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@color/white">-->
+        <!--<com.getbase.floatingactionbutton.FloatingActionsMenu-->
+            <!--android:id="@+id/fab_menu"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:elevation="6dp"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:layout_gravity="right|bottom"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--app:fab_addButtonColorNormal="@color/colorPrimaryDark"-->
+            <!--app:fab_addButtonColorPressed="@color/colorPrimaryDark"-->
+            <!--app:fab_addButtonPlusIconColor="@color/white"-->
+            <!--app:fab_addButtonStrokeVisible="false"-->
+            <!--app:fab_labelStyle="@style/menu_labels_style"-->
+            <!--app:fab_labelsPosition="left">-->
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_upload_to_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            app:fab_colorNormal="@color/fab_color"
-            app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_plusIconColor="@color/white"
-            app:fab_icon="@drawable/ic_drive"
-            app:fab_size="mini"
-            app:fab_title="Backup to Google Drive" />
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/fab_upload_to_google"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--app:fab_colorNormal="@color/fab_color"-->
+            <!--app:fab_colorPressed="@color/colorPrimaryDark"-->
+            <!--app:fab_plusIconColor="@color/white"-->
+            <!--app:fab_icon="@drawable/ic_drive"-->
+            <!--app:fab_size="mini"-->
+            <!--app:fab_title="Backup to Google Drive" />-->
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_new_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            app:fab_colorNormal="@color/fab_color"
-            app:fab_colorPressed="@color/colorPrimary"
-            app:fab_plusIconColor="@color/white"
-            app:fab_icon="@drawable/ic_sms_fab"
-            app:fab_size="mini"
-            app:fab_title="New Conversation" />
-        </com.getbase.floatingactionbutton.FloatingActionsMenu>
-        </FrameLayout>
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/fab_new_contact"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--app:fab_colorNormal="@color/fab_color"-->
+            <!--app:fab_colorPressed="@color/colorPrimary"-->
+            <!--app:fab_plusIconColor="@color/white"-->
+            <!--app:fab_icon="@drawable/ic_sms_fab"-->
+            <!--app:fab_size="mini"-->
+            <!--app:fab_title="New Conversation" />-->
+        <!--</com.getbase.floatingactionbutton.FloatingActionsMenu>-->
+        <!--</FrameLayout>-->
         </RelativeLayout>
     <RelativeLayout
         android:id="@+id/no_item_layout"

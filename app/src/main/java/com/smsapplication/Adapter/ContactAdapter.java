@@ -139,9 +139,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
                 contactList = (ArrayList<Contact>) results.values;
-                Log.d("Filter1 contactSize",String.valueOf(contactList.size()));
             } else {
-                Log.d("Filter0 contactSize",String.valueOf(contactList.size()));
                 contactList = new ArrayList<Contact>();
             }
             if (results.count > 0) {

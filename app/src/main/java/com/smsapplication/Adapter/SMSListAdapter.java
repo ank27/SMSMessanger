@@ -60,7 +60,6 @@ public class SMSListAdapter extends BaseAdapter {
             final Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.valueOf(message.time));
             Date date = cal.getTime();
-            Log.d("SMSAdapter",String.valueOf(date));
             SimpleDateFormat month_date = new SimpleDateFormat("MMM");
             String month_name = month_date.format(cal.getTime());
 
@@ -79,7 +78,6 @@ public class SMSListAdapter extends BaseAdapter {
             final Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.valueOf(message.time));
             Date date = cal.getTime();
-            Log.d("InboxAdapter",String.valueOf(date));
             SimpleDateFormat month_date = new SimpleDateFormat("MMM");
             String month_name = month_date.format(cal.getTime());
             holder2.time_text_incoming.setText(month_name+" "+cal.get(Calendar.DATE));

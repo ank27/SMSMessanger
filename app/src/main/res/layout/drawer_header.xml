@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
-            android:text="SMSApp"
+            android:text="SMSMessenger"
             android:textColor="@android:color/white" />
         <TextView
             android:id="@+id/header_userEmail"
@@ -41,7 +41,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Welcome Guest"
+            android:text="Welcome Messenger"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </FrameLayout>

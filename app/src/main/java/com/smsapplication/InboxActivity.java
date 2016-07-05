@@ -92,7 +92,6 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onResumeFragments(){
-        Log.d(TAG,"ResumeFragments");
         super.onResumeFragments();
         set_fragment(0);
         invalidateOptionsMenu();
@@ -105,7 +104,6 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
             hiddenKeyboard(focus);
         }
         if(open_fragment==0){
-            Log.d(TAG,"onBackPressed");
             super.onBackPressed();
             InboxActivity.this.finish();
         }else {
@@ -145,7 +143,6 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
                 removeFragment=tag;
                 transaction.replace(R.id.frame_container, fragment, tag).commit();
             } else {
-                Log.i("else", tag);
                 fragmentManager.popBackStack(tag, 0);
             }
         }
@@ -167,7 +164,6 @@ public class InboxActivity extends AppCompatActivity implements NavigationView.O
             set_fragment(1);
         }
         if(id==R.id.backup_to_drive){
-            Log.d(TAG,"item selected");
             Intent backupIntent=new Intent(InboxActivity.this,BackUpActivity.class);
             startActivity(backupIntent);
         }
